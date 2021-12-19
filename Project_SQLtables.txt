@@ -1,0 +1,107 @@
+CREATE TABLE Target_Stores (
+      StoreNum CHAR(5) NOT NULL,
+      Street_Adresss VARCHAR(30),
+      City VARCHAR (20),
+      ZipCode CHAR(5),
+      Store_Manager VARCHAR(35),
+      Phone VARCHAR(12), 
+      PRIMARY KEY(StoreNum)
+      );
+      
+    CREATE TABLE SFS_Orders(
+        OrderID CHAR(1),
+        OrderNum VARCHAR(15),
+        StoreNumber CHAR(5) NOT NULL,
+        ProductID VARCHAR(15) NOT NULL,
+        Product_Name VARCHAR(30),
+        Quantity NUMERIC NOT NULL,
+        Price_Per_Item FLOAT NOT NULL,
+        Ship_Date DATE NOT NULL,
+        CustomerID VARCHAR(15) NOT NULL,
+        Shipping_Address VARCHAR(30),
+        State VARCHAR(15),
+        City VARCHAR(15),
+        PRIMARY KEY(OrderNum),
+        FOREIGN KEY(StoreNumber) REFERENCES Target_Stores(StoreNum) ON UPDATE CASCADE
+    );
+        
+    CREATE TABLE Customers(
+          Customer_ID VARCHAR(15) NOT NULL,
+          OrderNumber VARCHAR(15),
+          OrderDate DATE NOT NULL,
+          Customer_First VARCHAR(15),
+          Customer_Last VARCHAR(15),
+          Billing_Address VARCHAR(50),
+          Payment_Ending_In CHAR(4),
+          PRIMARY KEY(Customer_ID)
+       );
+      
+       
+       INSERT INTO Target_Stores
+       VALUES('T3845','546 Friendship Rd', 'Atlanta', '30063', 'Chad Rogers', '470-453-3456');
+        
+        INSERT INTO Target_Stores 
+       VALUES('T4509', '349 MLK Drive', 'Atlanta', '30042', 'Amy Richards', '404-483-8947');
+       
+        INSERT INTO Target_Stores
+       VALUES('T5389', '439 Shallowmoore Rd', 'Atlanta', '30491', 'Ian Davidson', '770-859-4584');
+       
+        INSERT INTO Target_Stores 
+       VALUES('T5930',  '274 Buford Hwy', 'Lawerenceville', '30588', 'Alisha Smith', '404-858-1632');
+       
+        INSERT INTO Target_Stores
+       VALUES('T6893', '300 Landshore Way', 'Cumming', '30078', 'Carl Mann', '770-589-7435');
+       
+        INSERT INTO Target_Stores
+       VALUES('T6925', '505 Landcaster Rd', 'Buford', '30588', 'Richard Hand', '770-899-4532');
+       
+          INSERT INTO CUSTOMERS
+       VALUES('CU180634A1', 'OR129080','2021/10/10', 'Jasmine', 'Sullivan', '126 Sunset Drive ATL,GA 30548', '7845');
+       
+       INSERT INTO CUSTOMERS
+      VALUES('CU234064A2', 'OR120805','2021/10/9', 'Alex', 'Stevens', '195 Porter Avenue CHI,IL 60007', '8956');
+      
+        INSERT INTO CUSTOMERS
+      VALUES('CU305909A3', 'OR084289','2021/12/15', 'Cheryl', 'Rodgers', '989 Winter Harbour Buford, GA 30089', '7895');
+      
+        INSERT INTO CUSTOMERS
+      VALUES('CU494039A4','OR934098','2021/12/20', 'Ivan', 'Nunez', '788 Silver Lane NY, NY 11595', '8898');
+      
+        INSERT INTO CUSTOMERS
+      VALUES('CU508909A5', 'OR935890','2019/10/12', 'Joseph', 'Rogan', '902 Garden Way Houston, TX 20898', '9890');
+      
+        INSERT INTO CUSTOMERS
+      VALUES('CU689098A6', 'OR934230','2019/10/15', 'Henry', 'King', '555 Green Ave ATL, GA 30559', '4432');
+      
+      INSERT INTO SFS_Orders
+      VALUES('1','OR129080', 'T3845', 'PR4597','Apple Watch', 1, 150.99, '2021/10/15', 'CU180634A1', '233 New Hope Rd', 'Georgia', 'Buford');
+      
+      INSERT INTO SFS_Orders
+      VALUES('2','OR120805', 'T5930', 'PR03489', 'Beat Headphones', 2, 199.99, '2021/10/13', 'CU234064A2', '195 Porter Avenue', 'Illinois', 'Chicago');
+      
+      INSERT INTO SFS_Orders
+      VALUES('3','OR084289', 'T6925', 'PR39438', 'Carhartt Long Sleeve', 2, 49.99, '2021/12/20', 'CU305909A3', '455 Moore Drive', 'Georgia', 'Atlanta');
+      
+      INSERT INTO SFS_Orders
+      VALUES('4','OR934098', 'T5930', 'PR399389', 'Medium Dog Bed', 3, 29.99, '2021/12/29', 'CU494039A4', '322 Hollywood Circle', 'Florida', 'Miami');
+      
+      INSERT INTO SFS_Orders
+      VALUES('5','OR935890', 'T6925', 'PR49389', 'Macbook Pro 2020', 1, 999.99, '2019/10/18', 'CU508909A5', '2331 NW 31st', 'Florida', 'Hallendale'  );
+      
+     INSERT INTO SFS_Orders
+      VALUES('6','OR934230', 'T6925', 'PR39289', 'Ninja Airfryer', 1, 50.99, '2019/10/17', 'CU689098A6', '434 Ponce City', 'Georgia', 'Atlanta' ); 
+     
+       
+       
+       ALTER TABLE Customers
+       ADD FOREIGN KEY (OrderNumber) REFERENCES SFS_Orders(OrderNum)ON DELETE CASCADE;
+       
+        ALTER TABLE SFS_Orders
+       ADD FOREIGN KEY (CustomerID) REFERENCES Customers(Customer_ID)ON DELETE CASCADE;
+       
+       DELETE FROM SFS_Orders WHERE OrderNum = 'OR129080';
+       
+       UPDATE SFS_Orders
+       SET StoreNumber = 'T6893'
+       WHERE StoreNumber = 'T6925';
+

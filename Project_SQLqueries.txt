@@ -1,0 +1,92 @@
+**Query A**:
+
+    SELECT * FROM Customers
+    WHERE Customer_First LIKE '%e%';
+
+    | Customer_ID | OrderNumber |  OrderDate | Customer_First | Customer_Last |                     Billing_Address | Payment_Ending_In |
+    |-------------|-------------|------------|----------------|---------------|-------------------------------------|-------------------|
+    |  CU234064A2 |    OR120805 | 2021-10-09 |           Alex |       Stevens |      195 Porter Avenue CHI,IL 60007 |              8956 |
+    |  CU305909A3 |    OR084289 | 2021-12-15 |         Cheryl |       Rodgers | 989 Winter Harbour Buford, GA 30089 |              7895 |
+    |  CU508909A5 |    OR935890 | 2019-10-12 |         Joseph |         Rogan |    902 Garden Way Houston, TX 20898 |              9890 |
+    |  CU689098A6 |    OR934230 | 2019-10-15 |          Henry |          King |         555 Green Ave ATL, GA 30559 |              4432 |
+
+
+**Query B**:    
+    SELECT ProductID, Product_name, ROUND((Price_Per_Item - Price_Per_Item*0.15),2) AS Holiday_Discounted_Price
+    FROM SFS_Orders;
+
+    | ProductID |         Product_name | Holiday_Discounted_Price |
+    |-----------|----------------------|--------------------------|
+    |   PR39438 | Carhartt Long Sleeve |                    42.49 |
+    |   PR03489 |      Beat Headphones |                   169.99 |
+    |  PR399389 |       Medium Dog Bed |                    25.49 |
+    |   PR39289 |       Ninja Airfryer |                    43.34 |
+    |   PR49389 |     Macbook Pro 2020 |                   849.99 |
+
+
+
+
+**Query C**:
+    SELECT OrderNum, Ship_Date, CustomerId, State, City FROM SFS_Orders
+    WHERE State ='Georgia' OR State = 'Florida';
+
+    | OrderNum |  Ship_Date | CustomerId |   State |       City |
+    |----------|------------|------------|---------|------------|
+    | OR084289 | 2021-12-20 | CU305909A3 | Georgia |    Atlanta |
+    | OR934098 | 2021-12-29 | CU494039A4 | Florida |      Miami |
+    | OR934230 | 2019-10-17 | CU689098A6 | Georgia |    Atlanta |
+    | OR935890 | 2019-10-18 | CU508909A5 | Florida | Hallendale |
+
+
+
+
+
+
+
+
+
+
+**Query D**:    
+    SELECT Customer_ID, OrderNumber, OrderDate FROM Customers
+    WHERE OrderNumber IN (
+      SELECT OrderNum
+      FROM SFS_Orders
+      WHERE year(Ship_date) = '2019');
+
+    | Customer_ID | OrderNumber |  OrderDate |
+    |-------------|-------------|------------|
+    |  CU508909A5 |    OR935890 | 2019-10-12 |
+    |  CU689098A6 |    OR934230 | 2019-10-15 |
+
+
+
+
+**Query E**:    
+    SELECT SFS_Orders.OrderID, SFS_Orders.OrderNum, Customers.Customer_ID, Customers.Customer_First, Customers.Customer_Last, SFS_Orders.Shipping_Address, Customers.Billing_Address
+    FROM SFS_Orders
+    INNER JOIN Customers ON SFS_Orders.OrderNum = Customers.OrderNumber 
+    ORDER BY OrderID;
+
+
+    | OrderID | OrderNum | Customer_ID | Customer_First | Customer_Last |     Shipping_Address |                     Billing_Address |
+    |---------|----------|-------------|----------------|---------------|----------------------|-------------------------------------|
+    |       2 | OR120805 |  CU234064A2 |           Alex |       Stevens |    195 Porter Avenue |      195 Porter Avenue CHI,IL 60007 |
+    |       3 | OR084289 |  CU305909A3 |         Cheryl |       Rodgers |      455 Moore Drive | 989 Winter Harbour Buford, GA 30089 |
+    |       4 | OR934098 |  CU494039A4 |           Ivan |         Nunez | 322 Hollywood Circle |        788 Silver Lane NY, NY 11595 |
+    |       5 | OR935890 |  CU508909A5 |         Joseph |         Rogan |         2331 NW 31st |    902 Garden Way Houston, TX 20898 |
+    |       6 | OR934230 |  CU689098A6 |          Henry |          King |       434 Ponce City |         555 Green Ave ATL, GA 30559 |
+
+
+
+**Query F**:
+    
+    SELECT StoreNumber, SUM(Quantity) AS Total_Orders_For_Store
+    FROM SFS_Orders
+    WHERE StoreNumber = 'T6893';
+
+
+| StoreNumber | Total_Orders_For_Store |
+|-------------|------------------------|
+|       T6893 |                      4 |
+
+
